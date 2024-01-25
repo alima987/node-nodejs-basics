@@ -1,22 +1,22 @@
-import { createHash } from 'crypto';
-import { createReadStream } from 'fs';
-const fileStream = createReadStream('fileToCalculateHashFor.txt');
-const hash = createHash('sha256');
-const calculateHash = async () => {
+import fs from 'fs';
+import crypto from 'crypto';
 
-    fileStream.on('data', (chunk) => {
-        hash.update(chunk);
-      });
-    
-      fileStream.on('end', () => {
-        const digest = hash.digest('hex');
-        console.log(`SHA256 hash of ${inputFilePath}: ${digest}`);
-      });
-    
-      fileStream.on('error', (error) => {
-        console.error('Error reading file:', error);
-      });
-    
-}
+const calculateHash = async () => {
+  const readStream = fs.createReadStream('src/hash/files/fileToCalculateHashFor.txt');
+  const hash = crypto.createHash('sha256');
+  
+  readStream.on('data', (chunk) => {
+    hash.update(chunk);
+  });
+
+  readStream.on('end', () => {
+    const fileHash = hash.digest('hex');
+    console.log('SHA256 hash:', fileHash);
+  });
+
+  readStream.on('error', (err) => {
+    console.error('Error reading file:', err);
+  });
+};
 
 await calculateHash();
