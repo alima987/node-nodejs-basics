@@ -3,7 +3,7 @@ import { stdin, stdout } from 'node:process';
 stdin.pipe(stdout);
   
 const read = async () => {
-    const readableStream = createReadStream('fileToRead.txt');
+    const readableStream = createReadStream('src/streams/files/fileToRead.txt');
 
   readableStream.on('data', (chunk) => {
     process.stdout.write(chunk);
