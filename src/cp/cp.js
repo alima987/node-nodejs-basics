@@ -1,6 +1,30 @@
+import { spawn } from 'child_process';
 const spawnChildProcess = async (args) => {
-    // Write your code here
+    const childProcess = spawn('node', ['src/cp/files/script.js', ...args], {
+        stdio: ['pipe', 'pipe', process.stderr, 'ipc'] 
+      });
+    
+      childProcess.stdout.on('data', (data) => {
+        console.log(`Received from child process: ${data.toString()}`);
+      });
+
+      process.stdin.on('data', (data) => {
+        childProcess.stdin.write(data);
+      });
+    
+      childProcess.on('exit', (code, signal) => {
+        console.log(`Child process exited with code ${code} and signal ${signal}`);
+      });
+    
+      childProcess.on('error', (err) => {
+        console.error('Failed to start child process.', err);
+      });
+    
+      process.on('exit', () => {
+        childProcess.kill(); 
+      });
+    
 };
 
-// Put your arguments in function call to test this functionality
-spawnChildProcess( /* [someArgument1, someArgument2, ...] */);
+
+spawnChildProcess(['arg1', 'arg2']);
