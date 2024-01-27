@@ -6,7 +6,6 @@
     "node": ">=20.0.0"
   },
   "type": "module",
-
   "scripts": {
     "cli:args": "node src/cli/args.js --some-arg value1 --other 1337 --arg2 42",
     "cli:env": "npx cross-env SOME=any RSS_foo=bar RSS_bar=baz node src/cli/env.js",
@@ -41,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/AlreadyBored/node-nodejs-basics/issues"
   },
-  "homepage": "https://github.com/AlreadyBored/node-nodejs-basics#readme"
+  "homepage": "https://github.com/AlreadyBored/node-nodejs-basics#readme",
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  }
 }
