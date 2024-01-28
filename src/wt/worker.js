@@ -1,8 +1,11 @@
-import { parentPort, workerData } from 'worker_threads';
+import { parentPort, workerData, isMainThread} from 'worker_threads';
 const nthFibonacci = (n) => n < 2 ? n : nthFibonacci(n - 1) + nthFibonacci(n - 2);
 
 const sendResult = () => {
-    
+    const result = nthFibonacci(workerData);
+  if (!isMainThread) {
+    parentPort.postMessage(result);
+  }
 };
 
 
