@@ -1,16 +1,19 @@
-import { stdin, stdout } from 'node:process';
+import { createReadStream } from 'fs';
 import { Transform } from 'stream';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pathToFile = join(__dirname, 'files', 'fileToRead.txt');
 const transform = async () => {
-    const reverseStream = new Transform({
-        transform(chunk, encoding, callback) {
-          // Reverse the chunk (text) and push it to the output
-          this.push(chunk.toString().split('').reverse().join(''));
-          callback();
-        }
-      });
-    
-      // Pipe the input from process.stdin through the reverse stream to process.stdout
-      process.stdin.pipe(reverseStream).pipe(process.stdout);
+  const toReadFile = createReadStream(pathToFile)
+  const reverseStream = new Transform({
+    transform(chunk, _, callback) {
+      callback(null,chunk.toString().split('').reverse().join(''));
+    }
+  });
+  toReadFile.pipe(reverseStream).pipe(process.stdout);
 };
 
 await transform();
